@@ -1,4 +1,4 @@
-package net.iessochoa.pmdm.t11_ejemplointents
+package net.iessochoa.pmdm.t11_ejemplointents.ui.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -17,7 +17,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun IntentsAndPermissionsScreen(modifier: Modifier) {
+fun IntentsAndPermissionsScreen(
+    onClickPermisos: () -> Unit={},
+    modifier: Modifier=Modifier
+) {
     val context = LocalContext.current
 
     // Launcher para permisos

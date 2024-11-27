@@ -1,0 +1,9 @@
+package net.iessochoa.pmdm.t11_ejemplointents.ui.navigation
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+object IntentsAndPermissionsScreenDestination
+
+@Serializable
+object PermisosScreenDestination
