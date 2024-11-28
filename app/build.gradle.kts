@@ -73,4 +73,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
 //Serializacion
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json: 1.6.3")
+    //permisos
+    implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
 }

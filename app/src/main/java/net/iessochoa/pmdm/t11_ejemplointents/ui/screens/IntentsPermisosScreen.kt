@@ -23,13 +23,7 @@ fun IntentsAndPermissionsScreen(
 ) {
     val context = LocalContext.current
 
-    // Launcher para permisos
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        val message = if (isGranted) "Permiso concedido" else "Permiso denegado"
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
+
 
     Column(
         modifier = modifier
@@ -125,9 +119,11 @@ fun IntentsAndPermissionsScreen(
 
         // Botón 6: Solicitar permisos
         Button(
-            onClick = {
-            permissionLauncher.launch(android.Manifest.permission.CAMERA)
-        }, modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+            onClick = onClickPermisos,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp))
+        {
             Text("Permisos")
         }
     }
