@@ -14,7 +14,7 @@ fun AppNavigation() {
     NavHost(
         navController = navController,
         //pantalla de inicio
-        startDestination = IntentsAndPermissionsScreenDestination
+        startDestination = PermisosScreenDestination//IntentsAndPermissionsScreenDestination
     ) {
         //ruta a la pantalla ListaPalabrasScreen. Pantalla inicial de la app
         composable<IntentsAndPermissionsScreenDestination> {

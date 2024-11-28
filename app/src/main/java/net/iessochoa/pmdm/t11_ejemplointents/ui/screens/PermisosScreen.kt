@@ -2,6 +2,7 @@ package net.iessochoa.pmdm.t11_ejemplointents.ui.screens
 
 import android.Manifest
 import android.provider.CallLog
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,40 +38,21 @@ fun PermisosScreen(
             horizontalAlignment = Alignment.CenterHorizontally, // Centra los elementos horizontalmente
             verticalArrangement = Arrangement.Center // Centra verticalmente
         ) {
-            if (permissionState.status.isGranted) {
-            Text("Camera permission Granted")
-        } else {
-            Column {
-                val textToShow = if (permissionState.status.shouldShowRationale) {
-                    // If the user has denied the permission but the rationale can be shown,
-                    // then gently explain why the app requires this permission
-                    "The camera is important for this app. Please grant the permission."
-                } else {
-                    // If it's the first time the user lands on this feature, or the user
-                    // doesn't want to be asked again for this permission, explain that the
-                    // permission is required
-                    "Camera permission required for this feature to be available. " +
-                            "Please grant the permission"
-                }
-                Text(textToShow)
-                Button(onClick = { permissionState.launchPermissionRequest() }) {
-                    Text("Request permission")
-                }
-            }
-        }
-            // Texto superior
-            Text(
-                text = "Este es un ejemplo de Compose",
-                fontSize = 20.sp,
-                modifier = Modifier.padding(bottom = 16.dp) // Espaciado entre el texto y el botón
-            )
+
 
             // Botón debajo del texto
             Button(onClick = {
-                context.getContentResolver().delete(
-                    CallLog.Calls.CONTENT_URI,
-                    "number = 555555",null
-                )
+                if (permissionState.status.isGranted){
+                    context.getContentResolver().delete(
+                        CallLog.Calls.CONTENT_URI,
+                        "number = 555555",null
+                    )
+                    Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT).show()
+
+                }else{
+                        permissionState.launchPermissionRequest()
+                }
+
              }) {
                 Text(text = "Borrar 555-555", fontSize = 18.sp)
             }
