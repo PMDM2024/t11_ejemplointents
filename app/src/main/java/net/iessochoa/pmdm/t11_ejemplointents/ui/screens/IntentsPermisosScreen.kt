@@ -19,6 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 fun IntentsAndPermissionsScreen(
     onClickPermisos: () -> Unit={},
+    onClickPermisosLibreria: () -> Unit={},
+    onClickPermisosLibreriaSolicitudInmediata: () -> Unit={},
     modifier: Modifier=Modifier
 ) {
     val context = LocalContext.current
@@ -43,7 +45,7 @@ fun IntentsAndPermissionsScreen(
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)
             //debemos comprobar si existe una actividad que pueda manejar la acción
-            //pero desde es necesario incluir el permiso de internet en el manifest
+            //pero  es necesario incluir el permiso de internet en el manifest
             //puedes verlo en el manifest
            /* if (intent.resolveActivity(context.packageManager) != null) {
                 context.startActivity(intent)
@@ -125,6 +127,28 @@ fun IntentsAndPermissionsScreen(
                 .padding(8.dp))
         {
             Text("Permisos")
+        }
+        // Botón 7: Solicitar permisos con libreria
+        //Tenemos una librería en desarrollo de Google que nos permite simplificar el código
+        //de petición de permisos
+        //https://github.com/google/accompanist/tree/main/permissions
+        //es necesario incluir en el gradle
+        // implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
+        Button(
+            onClick = onClickPermisosLibreria,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp))
+        {
+            Text("Permisos con libreria")
+        }
+        Button(
+            onClick = onClickPermisosLibreriaSolicitudInmediata,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp))
+        {
+            Text("Permisos:Petición Inmediata")
         }
     }
 }

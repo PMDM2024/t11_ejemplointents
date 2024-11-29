@@ -7,3 +7,9 @@ object IntentsAndPermissionsScreenDestination
 
 @Serializable
 object PermisosScreenDestination
+
+@Serializable
+object PermisosLibreriaScreenDestination
+
+@Serializable
+object PermisosLibreriaSolicitudInmediataScreenDestination
