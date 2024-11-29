@@ -71,7 +71,7 @@ fun PermisosLibreriaSolicitudInmediataScreen(
             onVolver()
         }
     }
-
+    //iniciamos la petición de permiso
     LaunchedEffect(true) {
         if (!permissionState.status.isGranted)
             requestPermissionLauncher.launch(Manifest.permission.WRITE_CALL_LOG)
