@@ -46,6 +46,7 @@ import net.iessochoa.joseantoniolopez.tareas.ui.components.DialogoDeConfirmacion
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PermisosLibreriaScreen(
+    onVolver: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     // Estado para manejar la visualización del Snackbar.

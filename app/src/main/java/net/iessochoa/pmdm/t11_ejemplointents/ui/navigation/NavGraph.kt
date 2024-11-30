@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.IntentsAndPermissionsScreen
+import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.NavigationDrawerExample
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosLibreriaScreen
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosLibreriaSolicitudInmediataScreen
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosScreen
@@ -22,18 +23,23 @@ fun AppNavigation() {
         composable<IntentsAndPermissionsScreenDestination> {
             IntentsAndPermissionsScreen(
                 onClickPermisos = {
-                    // Navegamos a la pantalla PalabraScreen. Pasamos null porque es una nueva palabra
+                    // Navegamos a la pantalla
                     navController.navigate(PermisosScreenDestination)
                 },
                 onClickPermisosLibreria = {
-                    // Navegamos a la pantalla PalabraScreen. Pasamos null porque es una nueva palabra
+                    // Navegamos a la pantalla .
                     navController.navigate(PermisosLibreriaScreenDestination)
 
                 },
                 onClickPermisosLibreriaSolicitudInmediata = {
-                    // Navegamos a la pantalla PalabraScreen. Pasamos null porque es una nueva palabra
+                    // Navegamos a la pantalla . P
                     navController.navigate(PermisosLibreriaSolicitudInmediataScreenDestination)
+                },
+                onClickNavigationDrawer = {
+                    // Navegamos a la pantalla .
+                    navController.navigate(NavigationDrawerScreenDestination)
                 }
+
             )
         }
         //ruta a la pantalla
@@ -50,6 +56,11 @@ fun AppNavigation() {
                 }
             )
         }
+        //Navigation Drawer
+        composable<NavigationDrawerScreenDestination> {
+            NavigationDrawerExample()
+        }
+
 
     }
 }

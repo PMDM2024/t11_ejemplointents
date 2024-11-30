@@ -13,3 +13,6 @@ object PermisosLibreriaScreenDestination
 
 @Serializable
 object PermisosLibreriaSolicitudInmediataScreenDestination
+
+@Serializable
+object NavigationDrawerScreenDestination

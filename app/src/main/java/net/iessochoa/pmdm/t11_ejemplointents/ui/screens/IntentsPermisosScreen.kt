@@ -35,6 +35,7 @@ fun IntentsAndPermissionsScreen(
     onClickPermisos: () -> Unit={},
     onClickPermisosLibreria: () -> Unit={},
     onClickPermisosLibreriaSolicitudInmediata: () -> Unit={},
+    onClickNavigationDrawer: () -> Unit={},
     modifier: Modifier=Modifier
 ) {
     val context = LocalContext.current
@@ -207,6 +208,15 @@ fun IntentsAndPermissionsScreen(
             )
             {
                 Text("Permisos:Petición Inmediata")
+            }
+            Button(
+                onClick = onClickNavigationDrawer,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            {
+                Text("NavigationDrawer")
             }
         }
     }
