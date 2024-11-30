@@ -1,9 +1,6 @@
 package net.iessochoa.pmdm.t11_ejemplointents.ui.screens
 
 import android.Manifest
-import android.provider.CallLog
-import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +29,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import kotlinx.coroutines.launch
 import net.iessochoa.pmdm.t11_ejemplointents.ui.DialogoDeConfirmacion
 
 /**
@@ -50,8 +48,17 @@ fun PermisosLibreriaScreen(
     modifier: Modifier = Modifier
 ) {
     // Estado para manejar la visualización del Snackbar.
-    val snackbarState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    //permite mostrar el snackBar
+    val muestraSnackBar: (String, SnackbarDuration) -> Unit = { mensaje, duration ->
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                message = mensaje,
+                duration = duration
+            )
+        }
+    }
 
     // Control de visibilidad del cuadro de diálogo de confirmación.
     var mostrarDialogo by remember { mutableStateOf(false) }
@@ -65,7 +72,7 @@ fun PermisosLibreriaScreen(
 
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarState) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier
     ) { innerPadding ->
         Column(
@@ -95,7 +102,7 @@ fun PermisosLibreriaScreen(
                     if (permissionState.status.isGranted) {
 
                         borrarLlamada(context)
-                        mostrarSnackBar(scope, snackbarState, "Llamadas borradas")
+                        muestraSnackBar("Llamadas borradas",SnackbarDuration.Short )
                     //explicamos el uso del permiso
                     } else if(permissionState.status.shouldShowRationale){
                         mostrarDialogo = true
@@ -113,7 +120,7 @@ fun PermisosLibreriaScreen(
                     DialogoDeConfirmacion(
                         onDismissRequest = {
                             mostrarDialogo = false
-                            mostrarSnackBar(scope, snackbarState,
+                            muestraSnackBar(
                                 "Sin los permisos necesarios no se puede borrar el registro. Concede los permisos desde las opciones de la aplicación.",
                                 SnackbarDuration.Long
                             )

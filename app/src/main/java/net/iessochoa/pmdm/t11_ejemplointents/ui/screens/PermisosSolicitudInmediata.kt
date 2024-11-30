@@ -62,8 +62,10 @@ fun PermisosLibreriaSolicitudInmediataScreen(
     val context = LocalContext.current
     //nos permite pedir el permiso y manejar la lógica de permisos
     val permissionState = rememberPermissionState(Manifest.permission.WRITE_CALL_LOG)
+    //mostramos en pantalla si tenemos el permiso
     var estadoPermiso =
         if (permissionState.status.isGranted) "Permiso concedido" else "Permiso denegado"
+    //nos permite solicitar al sistema el permiso
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->

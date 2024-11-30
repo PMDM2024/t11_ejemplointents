@@ -6,8 +6,6 @@ import android.content.pm.PackageManager
 import android.provider.CallLog
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,6 +46,7 @@ fun PermisosScreen(
     // Contexto de la actividad actual.
     val context = LocalContext.current
 
+
     // Variable que indica si el permiso está concedido.
     var granted by remember {
         mutableStateOf(
@@ -66,8 +65,16 @@ fun PermisosScreen(
     }
 
     // Estado para manejar la visualización del Snackbar.
-    val snackbarState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val muestraSnackBar: (String, SnackbarDuration) -> Unit = { mensaje, duration ->
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                message = mensaje,
+                duration = duration
+            )
+        }
+    }
 
     // Control de visibilidad del cuadro de diálogo de confirmación.
     var mostrarDialogo by remember { mutableStateOf(false) }
@@ -84,7 +91,7 @@ fun PermisosScreen(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarState) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier
     ) { innerPadding ->
         Column(
@@ -93,12 +100,12 @@ fun PermisosScreen(
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
 
-        ) {
+            ) {
 
-                Text(
-                    text = "Permisos en Android",
-                    fontSize = 30.sp,
-                )
+            Text(
+                text = "Permisos en Android",
+                fontSize = 30.sp,
+            )
             Spacer(modifier = Modifier.padding(100.dp))
             // Muestra el estado del permiso.
             Text(text = estadoPermiso)
@@ -112,7 +119,7 @@ fun PermisosScreen(
                 //si el permiso está concedido borramos la llamada, en otro caso mostramos un mensaje
                 if (granted) {
                     borrarLlamada(context)
-                    mostrarSnackBar(scope, snackbarState, "Llamadas borradas")
+                    muestraSnackBar( "Llamadas borradas", SnackbarDuration.Short)
 
                 } else {
                     mostrarDialogo = true
@@ -126,8 +133,8 @@ fun PermisosScreen(
                 DialogoDeConfirmacion(
                     onDismissRequest = {
                         mostrarDialogo = false
-                        mostrarSnackBar(scope, snackbarState,
-                            "Sin los permisos necesarios no se puede borrar el registro. Concede los permisos desde las opciones de la aplicación.",
+                        muestraSnackBar(
+                           "Sin los permisos necesarios no se puede borrar el registro. Concede los permisos desde las opciones de la aplicación.",
                             SnackbarDuration.Long
                         )
 
@@ -162,7 +169,7 @@ fun borrarLlamada(context: Context) {
 /**
  * muestra el snackBar
  */
-fun mostrarSnackBar(
+/*fun mostrarSnackBar2(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
     mensaje: String,
@@ -174,5 +181,5 @@ fun mostrarSnackBar(
             duration = duration
         )
     }
-}
+}*/
 
