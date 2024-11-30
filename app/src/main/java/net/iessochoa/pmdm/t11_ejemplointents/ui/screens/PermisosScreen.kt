@@ -32,7 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import net.iessochoa.pmdm.t11_ejemplointents.ui.DialogoDeConfirmacion
+import net.iessochoa.joseantoniolopez.tareas.ui.components.DialogoDeConfirmacion
+
 
 /**
  * Función composable para gestionar permisos de acceso al registro de llamadas.
@@ -45,24 +46,6 @@ fun PermisosScreen(
 ) {
     // Contexto de la actividad actual.
     val context = LocalContext.current
-
-
-    // Variable que indica si el permiso está concedido.
-    var granted by remember {
-        mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.WRITE_CALL_LOG
-            ) == PackageManager.PERMISSION_GRANTED
-        )
-    }
-
-    // Estado del permiso para mostrar al usuario.
-    var estadoPermiso by remember {
-        mutableStateOf(
-            if (granted) "Permiso concedido" else "Permiso denegado"
-        )
-    }
 
     // Estado para manejar la visualización del Snackbar.
     val snackbarHostState = remember { SnackbarHostState() }
@@ -78,7 +61,22 @@ fun PermisosScreen(
 
     // Control de visibilidad del cuadro de diálogo de confirmación.
     var mostrarDialogo by remember { mutableStateOf(false) }
-
+    //**********PERMISOS******************
+    // Variable que indica si el permiso está concedido.
+    var granted by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.WRITE_CALL_LOG
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+// Mostramos el estado del permiso en pantalla.
+    var estadoPermiso by remember {
+        mutableStateOf(
+            if (granted) "Permiso concedido" else "Permiso denegado"
+        )
+    }
     // Lanza la solicitud del permiso y actualiza el estado según la respuesta.
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -166,20 +164,4 @@ fun borrarLlamada(context: Context) {
     )
 }
 
-/**
- * muestra el snackBar
- */
-/*fun mostrarSnackBar2(
-    scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
-    mensaje: String,
-    duration: SnackbarDuration = SnackbarDuration.Short
-) {
-    scope.launch {
-        snackbarHostState.showSnackbar(
-            message = mensaje,
-            duration = duration
-        )
-    }
-}*/
 

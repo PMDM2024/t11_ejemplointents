@@ -30,7 +30,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.launch
-import net.iessochoa.pmdm.t11_ejemplointents.ui.DialogoDeConfirmacion
+import net.iessochoa.joseantoniolopez.tareas.ui.components.DialogoDeConfirmacion
+
 
 /**
 * Función composable para gestionar permisos de acceso al registro de llamadas.

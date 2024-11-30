@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">T11-EjemploIntents</string>
+    <string name="mandar_correo">Mandar correo</string>
 </resources>
