@@ -230,6 +230,7 @@ private fun ListaAccionesToolBar(showSnackbar: (String, SnackbarDuration) -> Uni
             ),
             ActionItem(
                 "Filtrar",
+                //icono personalizado
                 ImageVector.vectorResource(id = R.drawable.ic_filter),
                 action = { showSnackbar("Filtrar", SnackbarDuration.Short) }
             )
@@ -255,6 +256,7 @@ private fun ListaOverflowMenu(showSnackbar: (String, SnackbarDuration) -> Unit):
             icon=Icons.Default.Send,
             action = { showSnackbar("Enviar sugerencias", SnackbarDuration.Short) }
         ),
+        //accion sin icono
         ActionItem(
             "Ayuda",
 
