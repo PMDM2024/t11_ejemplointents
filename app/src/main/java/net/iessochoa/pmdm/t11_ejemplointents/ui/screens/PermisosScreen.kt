@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import net.iessochoa.joseantoniolopez.tareas.ui.components.DialogoDeConfirmacion
+import net.iessochoa.pmdm.t11_ejemplointents.ui.components.DialogoDeConfirmacion
 
 
 /**

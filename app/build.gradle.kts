@@ -75,4 +75,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json: 1.6.3")
     //permisos
     implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
+    //coil, librería para cargar imágenes desde internet
+    implementation("io.coil-kt.coil3:coil-compose:3.0.2")
+    // CameraX
+    implementation ("androidx.camera:camera-core:1.4.0")
+    implementation ("androidx.camera:camera-camera2:1.4.0")
+    implementation ("androidx.camera:camera-lifecycle:1.4.0")
+    implementation ("androidx.camera:camera-view:1.4.0")
+    implementation("androidx.camera:camera-extensions:1.4.0")
 }

@@ -1,4 +1,4 @@
-package net.iessochoa.joseantoniolopez.tareas.ui.components
+package net.iessochoa.pmdm.t11_ejemplointents.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

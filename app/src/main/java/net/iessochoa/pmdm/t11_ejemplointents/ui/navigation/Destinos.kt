@@ -16,3 +16,9 @@ object PermisosLibreriaSolicitudInmediataScreenDestination
 
 @Serializable
 object NavigationDrawerScreenDestination
+
+@Serializable
+object FotoScreenDestination
+
+@Serializable
+object CameraXDestination

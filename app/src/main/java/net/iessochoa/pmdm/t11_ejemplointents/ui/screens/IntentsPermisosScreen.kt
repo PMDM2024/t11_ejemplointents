@@ -4,11 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -27,9 +28,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import kotlinx.coroutines.launch
-import net.iessochoa.joseantoniolopez.tareas.ui.components.ActionItem
-import net.iessochoa.joseantoniolopez.tareas.ui.components.AppBar
+
 import net.iessochoa.pmdm.t11_ejemplointents.R
+import net.iessochoa.pmdm.t11_ejemplointents.ui.components.ActionItem
+import net.iessochoa.pmdm.t11_ejemplointents.ui.components.AppBar
 
 @Composable
 fun IntentsAndPermissionsScreen(
@@ -37,6 +39,7 @@ fun IntentsAndPermissionsScreen(
     onClickPermisosLibreria: () -> Unit={},
     onClickPermisosLibreriaSolicitudInmediata: () -> Unit={},
     onClickNavigationDrawer: () -> Unit={},
+    onClickFoto: () -> Unit={},
     modifier: Modifier=Modifier
 ) {
     val context = LocalContext.current
@@ -71,8 +74,10 @@ fun IntentsAndPermissionsScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+
         ) {
             Text(
                 text = "Intents",
@@ -223,6 +228,21 @@ fun IntentsAndPermissionsScreen(
             {
                 Text("NavigationDrawer")
             }
+            Text(
+                text = "Fotos",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(4.dp)
+            )
+            Button(
+                onClick = onClickFoto,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+            {
+                Text("Leer y hacer Foto")
+            }
+
         }
     }
 }

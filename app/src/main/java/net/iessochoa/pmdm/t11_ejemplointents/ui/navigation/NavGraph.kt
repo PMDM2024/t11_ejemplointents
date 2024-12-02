@@ -9,6 +9,8 @@ import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.NavigationDrawerExample
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosLibreriaScreen
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosLibreriaSolicitudInmediataScreen
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosScreen
+import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.fotoscreen.CamaraX2View
+import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.fotoscreen.FotoScreen
 
 @Composable
 fun AppNavigation() {
@@ -38,6 +40,10 @@ fun AppNavigation() {
                 onClickNavigationDrawer = {
                     // Navegamos a la pantalla .
                     navController.navigate(NavigationDrawerScreenDestination)
+                },
+                onClickFoto = {
+                    // Navegamos a la pantalla .
+                    navController.navigate(FotoScreenDestination)
                 }
 
             )
@@ -59,6 +65,25 @@ fun AppNavigation() {
         //Navigation Drawer
         composable<NavigationDrawerScreenDestination> {
             NavigationDrawerExample()
+        }
+        //fotos
+        composable<FotoScreenDestination> {
+            FotoScreen(
+                onClickCameraX = {
+                    navController.navigate(CameraXDestination)
+                },
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        //CameraX
+        composable<CameraXDestination> {
+            CamaraX2View(
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
         }
 
 
