@@ -75,9 +75,9 @@ fun IntentsAndPermissionsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Intents y Permisos",
-                fontSize = 30.sp,
-                modifier = Modifier.padding(16.dp)
+                text = "Intents",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(4.dp)
             )
 
             // Botón 1: Abrir URL
@@ -96,7 +96,7 @@ fun IntentsAndPermissionsScreen(
             }*/
                 }, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             ) {
                 Text("Abrir URL")
             }
@@ -114,7 +114,7 @@ fun IntentsAndPermissionsScreen(
             }*/
                 }, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             ) {
                 Text("Llamar por teléfono")
             }
@@ -122,7 +122,7 @@ fun IntentsAndPermissionsScreen(
             // Botón 3: Abrir Google Maps
             Button(
                 onClick = {
-                    val geoUri = "geo:38.278855,-0.716400?22"
+                    val geoUri = "geo:34.274455,-0.716400?22"
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                     context.startActivity(intent)
                     /*if (intent.resolveActivity(context.packageManager) != null) {
@@ -132,7 +132,7 @@ fun IntentsAndPermissionsScreen(
             }*/
                 }, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             ) {
                 Text("Google Maps")
             }
@@ -149,7 +149,7 @@ fun IntentsAndPermissionsScreen(
             }*/
                 }, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             ) {
                 Text("Abrir cámara")
             }
@@ -171,17 +171,21 @@ fun IntentsAndPermissionsScreen(
             }*/
                 }, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             ) {
                 Text(stringResource(R.string.mandar_correo))
             }
-
+            Text(
+                text = "Permisos",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(4.dp)
+            )
             // Botón 6: Solicitar permisos
             Button(
                 onClick = onClickPermisos,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             )
             {
                 Text("Permisos")
@@ -196,7 +200,7 @@ fun IntentsAndPermissionsScreen(
                 onClick = onClickPermisosLibreria,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             )
             {
                 Text("Permisos con libreria")
@@ -205,7 +209,7 @@ fun IntentsAndPermissionsScreen(
                 onClick = onClickPermisosLibreriaSolicitudInmediata,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             )
             {
                 Text("Permisos:Petición Inmediata")
@@ -214,7 +218,7 @@ fun IntentsAndPermissionsScreen(
                 onClick = onClickNavigationDrawer,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(4.dp)
             )
             {
                 Text("NavigationDrawer")

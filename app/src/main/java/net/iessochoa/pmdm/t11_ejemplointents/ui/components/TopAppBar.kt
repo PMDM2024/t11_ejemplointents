@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
  * @param tituloPantallaActual pantalla actual. Permite mostrar el titulo correspondiente.
  * @param puedeNavegarAtras indica si se puede navegar hacia atrás. La pantalla de inicio no puede tener navegación hacia atrás
  * @param navegaAtras acción de navegación hacia atrás. Lambda que se ejecuta al pulsar el botón de navegación hacia atrás
+ * @param listaAcciones lista de acciones a mostrar en la barra de navegación.
+ * @param listaAccionesOverflow lista de acciones a mostrar en el overflow menu.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +76,7 @@ fun AppBar(
 }
 
 /**
- * Nos permite crear las acciones del menúde la TopAppBar
+ * Nos permite crear las acciones del menú de la TopAppBar
  */
 data class ActionItem(
     val name: String,
