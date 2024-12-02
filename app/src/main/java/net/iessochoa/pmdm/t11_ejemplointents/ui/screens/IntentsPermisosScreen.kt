@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -263,7 +264,7 @@ private fun ListaOverflowMenu(showSnackbar: (String, SnackbarDuration) -> Unit):
         ),
         ActionItem(
             "Enviar sugerencias",
-            icon=Icons.Default.Send,
+            icon=Icons.Default.Share,
             action = { showSnackbar("Enviar sugerencias", SnackbarDuration.Short) }
         ),
         //accion sin icono
