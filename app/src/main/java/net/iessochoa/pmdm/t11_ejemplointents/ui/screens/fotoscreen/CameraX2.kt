@@ -51,12 +51,15 @@ import net.iessochoa.pmdm.t11_ejemplointents.utils.nombreArchivo
 import java.io.File
 import java.util.concurrent.Executor
 
-
+/**
+ * Composable que muestra una vista previa de la cámara y permite tomar una foto.
+ * Volvemos a la pantalla anterior pasando la uri de la foto cuando se pulse sobre la preview de la foto
+ * @param onResult Callback para manejar el resultado de la foto. Esta función pertenece a la pantalla anterior
+ */
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraXView(
-    viewModel: FotoViewModel = viewModel(),
-    onVolver: () -> Unit = {},
+    onResult: (String) -> Unit = {}
 ) {
     //Permisos: petición de permisos múltiples
     val permissions = rememberMultiplePermissionsState(
@@ -78,9 +81,10 @@ fun CameraXView(
 
     val directorio =
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absoluteFile
+    //guarda la uri de la foto actual
     val imagenUri = remember { mutableStateOf<Uri?>(null) }
 
-    // Corutina para lanzar la solicitud de permiso de la camara
+    // Corrutina que se ejecuta al inicio para lanzar la solicitud de permiso de la camara
     LaunchedEffect(key1 = Unit) {
         //permisoCamaraState.launchPermissionRequest()
         if (!permissions.allPermissionsGranted)
@@ -94,7 +98,7 @@ fun CameraXView(
             FloatingActionButton(
                 onClick = {
                     val executor = ContextCompat.getMainExecutor(context)
-                    tomarFoto(context, camaraController, executor, directorio,imagenUri)
+                    tomarFoto(context, camaraController, executor, imagenUri)
                 }
             ) {
                 Icon(
@@ -129,6 +133,8 @@ fun CameraXView(
               }
 
               imagenUri.value?.let { uri ->
+                  //carga la foto en un hilo
+                  //es una compose de la librería coil
                   AsyncImage(
                       model = uri,
                       contentDescription = null,
@@ -139,10 +145,12 @@ fun CameraXView(
                           .align(Alignment.BottomStart) // Posición abajo a la izquierda
                           .padding(16.dp) // Margen desde el borde de la pantalla
                           .border(4.dp, Color.White, RoundedCornerShape(8.dp))
+                          //Cuando se pulse sobre la imagen se vuelve a la pantalla anterior
                           .clickable {
                               if (imagenUri.value != null) {
-                                  viewModel.setUri(imagenUri.value!!)
-                                  onVolver()
+                                //Volvemos a la pantalla anterior pasando la uri de la imagen
+                                  onResult(imagenUri.value!!.toString())
+
                               }
                           }
                   )
@@ -178,12 +186,9 @@ private fun tomarFoto(
     context: Context,
     camaraController: LifecycleCameraController,
     executor: Executor,
-    directorio: File,
     imagenUri: MutableState<Uri?>
 ) {
-    /*val image = File.createTempFile("img_", ".jpg", directorio)
-    val outputDirectory = ImageCapture.OutputFileOptions.Builder(image).build()*/
-    // Create time stamped name and MediaStore entry.
+
     val name = nombreArchivo()
         .format(System.currentTimeMillis())
     val contentValues = ContentValues().apply {

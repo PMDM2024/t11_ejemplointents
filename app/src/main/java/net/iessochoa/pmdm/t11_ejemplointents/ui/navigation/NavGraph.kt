@@ -69,9 +69,25 @@ fun AppNavigation() {
         //fotos
         composable<FotoScreenDestination> {
             FotoScreen(
-                onClickCameraX = {
+                /*
+                Esta lambda nos permite recuperar el resultado de la pantalla CameraX.
+                El funcionamiento:
+               - Proporcionas un lambda (onResult) que espera el resultado.
+               - Este lambda se almacena en el savedStateHandle de la FotoScreen cuando se navega a la pantalla CameraX.
+               - En CameraXScreen recuperamos la lambda desde el savedStateHandle(previosBackStackEntry)
+               - Cuando el usuario interactúa con CameraX, invocas este lambda para devolver el resultado.
+                 */
+                onClickCameraX =
+                //onResult es el lambda que nos permite recuperar el resultado de la pantalla CameraX.
+                { onResult ->
+                    //Guardamos la lambda en el savedStateHandle de la pantalla actual para recuperarla en CameraXScreen
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("onUriResult", onResult)
+                    //navegamos a la pantalla CameraX
                     navController.navigate(CameraXDestination)
-                },
+                }
+                ,
                 onVolver = {
                     navController.popBackStack()
                 }
@@ -79,8 +95,19 @@ fun AppNavigation() {
         }
         //CameraX
         composable<CameraXDestination> {
+            /*
+            - Recuperamos la pantalla anterior (FotoScreen)
+            - Recuperamos la lambda que nos permite recuperar el resultado de la pantalla CameraX
+            - Navegamos a la pantalla CameraX
+      */
+            val parentBackStackEntry = navController.previousBackStackEntry
+            val onResult = parentBackStackEntry
+                ?.savedStateHandle
+                ?.get<(String) -> Unit>("onUriResult")
             CameraXView(
-                onVolver = {
+
+                onResult = { result ->
+                    onResult?.invoke(result)
                     navController.popBackStack()
                 }
             )

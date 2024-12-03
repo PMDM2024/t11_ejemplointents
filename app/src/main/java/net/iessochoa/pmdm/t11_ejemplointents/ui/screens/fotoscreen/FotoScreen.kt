@@ -49,7 +49,7 @@ import net.iessochoa.pmdm.t11_ejemplointents.R
 @Composable
 fun FotoScreen(
     viewModel: FotoViewModel = viewModel(),
-    onClickCameraX: () -> Unit = {},
+    onClickCameraX: (onResult: (String) -> Unit) -> Unit = {},
     onVolver: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -166,7 +166,9 @@ fun FotoScreen(
             }
             Button(
                 onClick = {
-                    onClickCameraX()
+                    onClickCameraX{uri ->
+                        viewModel.setUri(Uri.parse(uri))
+                    }
                 }) {
                 Text(text = "CameraX")
             }
