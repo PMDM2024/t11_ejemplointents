@@ -48,6 +48,7 @@
         </activity>
         <!--necesario para  leer de la galeria en versiones inferiores
         a Android 12 mediante -->
+        <!--suppress AndroidDomInspection -->
         <service android:name="com.google.android.gms.metadata.ModuleDependencies"
             android:enabled="false"
             android:exported="false"
