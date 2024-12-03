@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.layout.Column
@@ -48,17 +49,27 @@ fun FotoScreen(
     onVolver: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    //Permisos: petición de permisos múltiples
+    /*
+    Permisos:
+            Petición de permisos múltiples condicionales según la versión de Android
+     */
     val permissionState = rememberMultiplePermissionsState(
-        permissions = mutableListOf(
+        permissions = mutableListOf(//permiso para hacer fotos
             android.Manifest.permission.CAMERA
-        ).apply {
+        ).apply {//Permisos para la galería
+            //Si es Android menor de 10
             if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
                 add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+            }//si es Android igual o superior a 13
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                add(android.Manifest.permission.READ_MEDIA_IMAGES)
+            }//si es Android igual o superior a 14. Este permiso no lo tengo claro si es necesario
+            //podéis probar en el dispositivo real si tenéis Android 14
+            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                add(android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
+            }*/
         }
-
     )
     //solicitamos los permisos al inicio
     LaunchedEffect(key1 = Unit) {
@@ -77,11 +88,28 @@ fun FotoScreen(
     val context = LocalContext.current
 
 
-    /*Configura el launcher para abrir la galería,
+    /*Configura el launcher para abrir la galería en verisiones menores de Android 13,
     Obtenemos una uri y realizamos una copia de la imagen
     */
-    val launcherGaleria = rememberLauncherForActivityResult(
+    val launcherGaleriaMenor13 = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            //persistirPermisoUri(context, uri!!)
+            //hacemos una copia de foto, ya que en las nuevas versiones solo nos deja acceso en esta sesión
+            //lanzamos una corrutina para que no se bloquee el hilo principal
+            scope.launch {
+                val uriCopia = saveBitmapImage(context, loadFromUri(context, uri)!!)
+                viewModel.setUri(uriCopia)
+
+            }
+        }
+    )
+    /*
+    Galeria versión por encima de Versión 13 en Android. Para usarlo en versiones inferiores
+    tenéis incluir el Service de google que aparece en el manifest.xml
+     */
+    val launcherGaleria13 = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri: Uri? ->
             //persistirPermisoUri(context, uri!!)
             //hacemos una copia de foto, ya que en las nuevas versiones solo nos deja acceso en esta sesión
@@ -145,7 +173,19 @@ fun FotoScreen(
             )
             Button(
                 onClick = {
-                    launcherGaleria.launch("image/*")
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                        launcherGaleria13.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    } else {
+
+                       // launcherGaleriaMenor13.launch("image/*")
+                        //usamos el mismo que el anterior porque hemos incluido el Service en el manifest
+                        //en otro caso usar la línea anterior
+                        launcherGaleria13.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
                 }) {
                 Text(text = "Seleccionar de la Galeria")
             }
