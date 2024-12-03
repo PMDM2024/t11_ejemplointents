@@ -1,6 +1,6 @@
 package net.iessochoa.pmdm.t11_ejemplointents.ui.screens.fotoscreen
 
-import android.Manifest
+
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +19,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,15 +42,35 @@ import net.iessochoa.pmdm.t11_ejemplointents.utils.loadFromUri
 import net.iessochoa.pmdm.t11_ejemplointents.utils.saveBitmapImage
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import net.iessochoa.pmdm.t11_ejemplointents.R
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun FotoScreen(
     viewModel: FotoViewModel = viewModel(),
-    onClickCameraX: () -> Unit={},
+    onClickCameraX: () -> Unit = {},
     onVolver: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    //Permisos: petición de permisos múltiples
+    val permissionState = rememberMultiplePermissionsState(
+        permissions = mutableListOf(
+            android.Manifest.permission.CAMERA
+        ).apply {
+            if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
+                add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
+
+    )
+    //solicitamos los permisos al inicio
+    LaunchedEffect(key1 = Unit) {
+        if (!permissionState.allPermissionsGranted)
+            permissionState.launchMultiplePermissionRequest()
+    }
+    //estado
     val uiState by viewModel.uiState.collectAsState()
     // Estado para manejar la visualización del Snackbar.
     val snackbarHostState = remember { SnackbarHostState() }
@@ -69,9 +90,14 @@ fun FotoScreen(
 
     val context = LocalContext.current
     //nos permite pedir el permiso y manejar la lógica de permisos
-    val permissionState = rememberPermissionState(Manifest.permission.WRITE_CALL_LOG)
-    var estadoPermiso =
-        if (permissionState.status.isGranted) "Permiso concedido" else "Permiso denegado"
+
+    /*var estadoPermiso = if (permissionState.allPermissionsGranted)
+                            "Permiso concedido"
+                        else {
+                            permissionState.launchMultiplePermissionRequest()
+                            "Permiso denegado"
+                        }*/
+
 
     /*Configura el launcher para abrir la galería,
     Obtenemos una uri y realizamos una copia de la imagen
@@ -93,18 +119,18 @@ fun FotoScreen(
     nos permita hacer una foto y recuperar una preview de la imagen
     En este caso realizamos una copia y la mostramos
      */
-     val launcherPhoto = rememberLauncherForActivityResult(
-         contract = ActivityResultContracts.TakePicturePreview(),
-         onResult = { bitmap ->
-             if (bitmap != null) {
-                 scope.launch {
-                     val uriCopia = saveBitmapImage(context, bitmap)
-                     viewModel.setUri(uriCopia)
+    val launcherPhoto = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { bitmap ->
+            if (bitmap != null) {
+                scope.launch {
+                    val uriCopia = saveBitmapImage(context, bitmap)
+                    viewModel.setUri(uriCopia)
 
-                 }
-             }
-         }
-     )
+                }
+            }
+        }
+    )
 
 
     Scaffold(
@@ -158,7 +184,7 @@ fun FotoScreen(
                         .fillMaxSize()
                         .padding(16.dp)
                         .clip(RoundedCornerShape(16.dp)) // Borde redondeado
-                       // .border(2.dp, Color.Black, RoundedCornerShape(16.dp))
+                    // .border(2.dp, Color.Black, RoundedCornerShape(16.dp))
                 )
             }
         }

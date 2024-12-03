@@ -9,7 +9,7 @@ import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.NavigationDrawerExample
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosLibreriaScreen
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosLibreriaSolicitudInmediataScreen
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.PermisosScreen
-import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.fotoscreen.CamaraX2View
+import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.fotoscreen.CameraXView
 import net.iessochoa.pmdm.t11_ejemplointents.ui.screens.fotoscreen.FotoScreen
 
 @Composable
@@ -79,7 +79,7 @@ fun AppNavigation() {
         }
         //CameraX
         composable<CameraXDestination> {
-            CamaraX2View(
+            CameraXView(
                 onVolver = {
                     navController.popBackStack()
                 }

@@ -11,7 +11,6 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,18 +28,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -51,24 +46,19 @@ import coil3.compose.AsyncImage
 
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import net.iessochoa.pmdm.t11_ejemplointents.R
-import net.iessochoa.pmdm.t11_ejemplointents.utils.FILENAME_FORMAT
 import net.iessochoa.pmdm.t11_ejemplointents.utils.nombreArchivo
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Locale
 import java.util.concurrent.Executor
 
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CamaraX2View(
+fun CameraXView(
     viewModel: FotoViewModel = viewModel(),
     onVolver: () -> Unit = {},
 ) {
+    //Permisos: petición de permisos múltiples
     val permissions = rememberMultiplePermissionsState(
         permissions = mutableListOf(
             android.Manifest.permission.CAMERA
@@ -94,7 +84,7 @@ fun CamaraX2View(
     LaunchedEffect(key1 = Unit) {
         //permisoCamaraState.launchPermissionRequest()
         if (!permissions.allPermissionsGranted)
-             permissions.launchMultiplePermissionRequest()
+            permissions.launchMultiplePermissionRequest()
     }
 
     Scaffold(
@@ -150,7 +140,7 @@ fun CamaraX2View(
                           .padding(16.dp) // Margen desde el borde de la pantalla
                           .border(4.dp, Color.White, RoundedCornerShape(8.dp))
                           .clickable {
-                              if(imagenUri.value != null){
+                              if (imagenUri.value != null) {
                                   viewModel.setUri(imagenUri.value!!)
                                   onVolver()
                               }
