@@ -1,20 +1,20 @@
 package net.iessochoa.pmdm.t11_ejemplointents.ui.screens.fotoscreen
 
 
+import android.content.ContentValues
+import android.content.Context
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -22,28 +22,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
 import net.iessochoa.pmdm.t11_ejemplointents.utils.loadFromUri
 import net.iessochoa.pmdm.t11_ejemplointents.utils.saveBitmapImage
 import androidx.lifecycle.viewmodel.compose.viewModel
+
 import coil3.compose.AsyncImage
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import net.iessochoa.pmdm.t11_ejemplointents.R
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -75,28 +70,11 @@ fun FotoScreen(
     // Estado para manejar la visualización del Snackbar.
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    //permite mostrar el snackBar
-    val muestraSnackBar: (String, SnackbarDuration) -> Unit = { mensaje, duration ->
-        scope.launch {
-            snackbarHostState.showSnackbar(
-                message = mensaje,
-                duration = duration
-            )
-        }
-    }
 
-    // Control de visibilidad del cuadro de diálogo de confirmación.
-    var mostrarDialogo by remember { mutableStateOf(false) }
+
+
 
     val context = LocalContext.current
-    //nos permite pedir el permiso y manejar la lógica de permisos
-
-    /*var estadoPermiso = if (permissionState.allPermissionsGranted)
-                            "Permiso concedido"
-                        else {
-                            permissionState.launchMultiplePermissionRequest()
-                            "Permiso denegado"
-                        }*/
 
 
     /*Configura el launcher para abrir la galería,
@@ -119,7 +97,7 @@ fun FotoScreen(
     nos permita hacer una foto y recuperar una preview de la imagen
     En este caso realizamos una copia y la mostramos
      */
-    val launcherPhoto = rememberLauncherForActivityResult(
+    val launcherPhotoPreview = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview(),
         onResult = { bitmap ->
             if (bitmap != null) {
@@ -131,7 +109,20 @@ fun FotoScreen(
             }
         }
     )
-
+    /*
+    permite pedir una foto y guardarla en una uri
+     */
+    var uriTemp:Uri?=null
+    val launcherPhoto = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { esCorrecto ->
+            if (esCorrecto ) {
+                scope.launch {
+                    viewModel.setUri(uriTemp)
+                }
+            }
+        }
+    )
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -160,10 +151,19 @@ fun FotoScreen(
             }
             Button(
                 onClick = {
-                    launcherPhoto.launch()
+                    launcherPhotoPreview.launch()
                 }) {
                 Text(text = "Preview  foto")
             }
+            Button(
+                onClick = {
+                    uriTemp=creaUri(context)
+                    uriTemp?.let {launcherPhoto.launch(it)}
+                }
+            ){
+                Text(text = "Pedir foto Camara")
+            }
+
             Button(
                 onClick = {
                     onClickCameraX{uri ->
@@ -191,4 +191,16 @@ fun FotoScreen(
             }
         }
     }
+}
+/**
+ * permite crear una uri para guardar la imagen
+ * */
+fun creaUri(context: Context): Uri? {
+    val resolver = context.contentResolver
+    val contentValues = ContentValues().apply {
+        put(MediaStore.MediaColumns.DISPLAY_NAME, "photo_${System.currentTimeMillis()}.jpg")
+        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+        put(MediaStore.Images.ImageColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+    }
+    return resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 }
