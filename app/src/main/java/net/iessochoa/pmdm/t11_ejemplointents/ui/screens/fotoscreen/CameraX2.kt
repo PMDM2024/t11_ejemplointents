@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -102,7 +103,7 @@ fun CameraXView(
                 }
             ) {
                 Icon(
-                    Icons.Filled.AccountCircle,
+                    painterResource(R.drawable.baseline_photo_camera_24),
                     tint = Color.White,
                     contentDescription = ""
                 )
