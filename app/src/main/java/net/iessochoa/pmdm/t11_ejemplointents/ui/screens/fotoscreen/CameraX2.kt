@@ -41,14 +41,14 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
+
 import coil3.compose.AsyncImage
 
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import net.iessochoa.pmdm.t11_ejemplointents.R
 import net.iessochoa.pmdm.t11_ejemplointents.utils.nombreArchivo
-import java.io.File
+
 import java.util.concurrent.Executor
 
 /**
