@@ -81,10 +81,6 @@ fun FotoScreen(
     // Estado para manejar la visualización del Snackbar.
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-
-
-
-
     val context = LocalContext.current
 
 
@@ -97,27 +93,30 @@ fun FotoScreen(
             //persistirPermisoUri(context, uri!!)
             //hacemos una copia de foto, ya que en las nuevas versiones solo nos deja acceso en esta sesión
             //lanzamos una corrutina para que no se bloquee el hilo principal
-            scope.launch {
-                val uriCopia = saveBitmapImage(context, loadFromUri(context, uri)!!)
-                viewModel.setUri(uriCopia)
+            //si no es null
+            uri?.let {
+                scope.launch {
+                    val uriCopia = saveBitmapImage(context, loadFromUri(context, uri)!!)
+                    viewModel.setUri(uriCopia)
 
+                }
             }
         }
     )
     /*
-    Galeria versión por encima de Versión 13 en Android. Para usarlo en versiones inferiores
+    Llamada a Galeria versión por encima de Versión 13 en Android. Para usarlo en versiones inferiores
     tenéis incluir el Service de google que aparece en el manifest.xml
      */
     val launcherGaleria13 = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri: Uri? ->
-            //persistirPermisoUri(context, uri!!)
             //hacemos una copia de foto, ya que en las nuevas versiones solo nos deja acceso en esta sesión
             //lanzamos una corrutina para que no se bloquee el hilo principal
-            scope.launch {
-                val uriCopia = saveBitmapImage(context, loadFromUri(context, uri)!!)
-                viewModel.setUri(uriCopia)
-
+            uri?.let {//si no es null
+                scope.launch {
+                    val uriCopia = saveBitmapImage(context, loadFromUri(context, uri)!!)
+                    viewModel.setUri(uriCopia)
+                }
             }
         }
     )

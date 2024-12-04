@@ -19,7 +19,7 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-public val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
 /**
  * Crea un nombre de fichero con la fecha y hora actual
