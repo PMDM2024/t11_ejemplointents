@@ -40,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 import coil3.compose.AsyncImage
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import net.iessochoa.pmdm.t11_ejemplointents.utils.creaUri
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -197,7 +198,9 @@ fun FotoScreen(
             Button(
                 onClick = {
                     uriTemp=creaUri(context)
-                    uriTemp?.let {launcherPhoto.launch(it)}
+                    uriTemp?.let {
+                        launcherPhoto.launch(it)
+                    }
                 }
             ){
                 Text(text = "Pedir foto Camara")
@@ -230,16 +233,4 @@ fun FotoScreen(
             }
         }
     }
-}
-/**
- * permite crear una uri para guardar la imagen
- * */
-fun creaUri(context: Context): Uri? {
-    val resolver = context.contentResolver
-    val contentValues = ContentValues().apply {
-        put(MediaStore.MediaColumns.DISPLAY_NAME, "photo_${System.currentTimeMillis()}.jpg")
-        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-        put(MediaStore.Images.ImageColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-    }
-    return resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 }

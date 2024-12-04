@@ -133,3 +133,15 @@ fun loadFromUri(context: Context, photoUri: Uri?): Bitmap? {
     }
     return image
 }
+/**
+ * permite crear una uri para guardar la imagen
+ * */
+fun creaUri(context: Context): Uri? {
+    val resolver = context.contentResolver
+    val contentValues = ContentValues().apply {
+        put(MediaStore.MediaColumns.DISPLAY_NAME, nombreArchivo())
+        put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+        put(MediaStore.Images.ImageColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+    }
+    return resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+}
