@@ -76,7 +76,8 @@ dependencies {
     //permisos
     implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
     //coil, librería para cargar imágenes desde internet
-    implementation("io.coil-kt.coil3:coil-compose:3.0.2")
+    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
     // CameraX
     implementation ("androidx.camera:camera-core:1.4.0")
     implementation ("androidx.camera:camera-camera2:1.4.0")
